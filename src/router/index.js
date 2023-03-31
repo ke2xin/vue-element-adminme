@@ -86,18 +86,20 @@ export const constantRoutes = [
   {
     path: '/documentation',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: 'documentation', icon: 'documentation', affix: true }
+        meta: { title: 'documentation', icon: 'documentation', affix: false }
       }
     ]
   },
   {
     path: '/guide',
     component: Layout,
+    hidden: true,
     redirect: '/guide/index',
     children: [
       {
@@ -133,6 +135,7 @@ export const asyncRoutes = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
+    hidden: true,
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
@@ -193,6 +196,7 @@ export const asyncRoutes = [
   {
     path: '/example',
     component: Layout,
+    hidden: true,
     redirect: '/example/list',
     name: 'Example',
     meta: {
@@ -225,6 +229,7 @@ export const asyncRoutes = [
   {
     path: '/tab',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -238,6 +243,7 @@ export const asyncRoutes = [
   {
     path: '/error',
     component: Layout,
+    hidden: true,
     redirect: 'noRedirect',
     name: 'ErrorPages',
     meta: {
@@ -263,6 +269,7 @@ export const asyncRoutes = [
   {
     path: '/error-log',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'log',
@@ -276,6 +283,7 @@ export const asyncRoutes = [
   {
     path: '/excel',
     component: Layout,
+    hidden: true,
     redirect: '/excel/export-excel',
     name: 'Excel',
     meta: {
@@ -313,6 +321,7 @@ export const asyncRoutes = [
   {
     path: '/zip',
     component: Layout,
+    hidden: true,
     redirect: '/zip/download',
     alwaysShow: true,
     name: 'Zip',
@@ -330,6 +339,7 @@ export const asyncRoutes = [
   {
     path: '/pdf',
     component: Layout,
+    hidden: true,
     redirect: '/pdf/index',
     children: [
       {
@@ -349,6 +359,7 @@ export const asyncRoutes = [
   {
     path: '/theme',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -362,6 +373,7 @@ export const asyncRoutes = [
   {
     path: '/clipboard',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -375,6 +387,7 @@ export const asyncRoutes = [
   {
     path: '/i18n',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -388,10 +401,26 @@ export const asyncRoutes = [
   {
     path: 'external-link',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'https://github.com/PanJiaChen/vue-element-admin',
         meta: { title: 'externalLink', icon: 'link' }
+      }
+    ]
+  },
+  // 下面开始进行开发操作
+  {
+    path: '/projector',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: 'projector', icon: 'el-icon-s-platform' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/projector/index'),
+        name: 'I18n',
+        meta: { title: 'projector', icon: 'el-icon-s-platform' }
       }
     ]
   },

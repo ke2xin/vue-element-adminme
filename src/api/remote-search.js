@@ -10,7 +10,7 @@ export function searchUser(name) {
 
 export function transactionList(query) {
   return request({
-    url: '/vue-element-admin/transaction/list',
+    url: '/ps/ckz/app/tran_list.php',
     method: 'get',
     params: query
   })
