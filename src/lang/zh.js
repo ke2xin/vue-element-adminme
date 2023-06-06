@@ -72,7 +72,8 @@ export default {
     douyinupZl: '上传材料',
     settle_in: '自营机构/服务商入驻',
     yut: '原图与压缩管理',
-    yut_img: '上传图片'
+    yut_img: '上传图片',
+    lunar: '阴历转阳历'
   },
   navbar: {
     dashboard: '首页',

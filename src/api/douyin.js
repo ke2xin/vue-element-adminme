@@ -31,3 +31,11 @@ export function dyTest(data) {
     data
   })
 }
+
+export function lunar(data) {
+  return request({
+    url: '/ps/ckz/douyinkc/lunar.php',
+    method: 'post',
+    data
+  })
+}

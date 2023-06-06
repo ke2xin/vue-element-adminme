@@ -489,6 +489,20 @@ export const asyncRoutes = [
     ]
   },
 
+  {
+    path: '/lunar',
+    component: Layout,
+    alwaysShow: false,
+    meta: { title: 'lunar', icon: 'el-icon-s-opportunity' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/lunar/index'),
+        name: 'lunar',
+        meta: { title: 'lunar', icon: 'el-icon-s-opportunity' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
