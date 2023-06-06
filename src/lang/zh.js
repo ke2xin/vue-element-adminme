@@ -63,7 +63,16 @@ export default {
     i18n: '国际化',
     externalLink: '外链',
     profile: '个人中心',
-    projector: '投影仪管理'
+    projector: '投影仪管理',
+    topic: '大屏幕切换主题',
+    douyin: '抖音课程系统管理',
+    douyinResource: '上传课程资源',
+    searchkc: '查询课程资源上传状态',
+    douyin_role: '抖音角色系统管理',
+    douyinupZl: '上传材料',
+    settle_in: '自营机构/服务商入驻',
+    yut: '原图与压缩管理',
+    yut_img: '上传图片'
   },
   navbar: {
     dashboard: '首页',

@@ -177,6 +177,7 @@ export const asyncRoutes = [
   {
     path: '/icon',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -419,8 +420,71 @@ export const asyncRoutes = [
       {
         path: 'index',
         component: () => import('@/views/projector/index'),
-        name: 'I18n',
-        meta: { title: 'projector', icon: 'el-icon-s-platform' }
+        name: 'projector',
+        meta: { title: 'projector', icon: 'el-icon-takeaway-box' }
+      },
+      {
+        path: 'topic',
+        component: () => import('@/views/projector/topic'),
+        name: 'topic',
+        meta: { title: 'topic', icon: 'el-icon-s-promotion' }
+      }
+    ]
+  },
+  {
+    path: '/douyin',
+    component: Layout,
+    alwaysShow: true,
+    hidden: false,
+    meta: { title: 'douyin', icon: 'education' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/douyin/index'),
+        name: 'douyin',
+        meta: { title: 'douyinResource', icon: 'el-icon-picture' }
+      },
+      {
+        path: 'searchkc',
+        component: () => import('@/views/douyin/searchkc'),
+        name: 'searchkc',
+        meta: { title: 'searchkc', icon: 'el-icon-search' }
+      }
+    ]
+  },
+  {
+    path: '/douyin-role',
+    component: Layout,
+    alwaysShow: true,
+    hidden: false,
+    meta: { title: 'douyin_role', icon: 'peoples' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/douyin-role/index'),
+        name: 'douyin-role',
+        meta: { title: 'douyinupZl', icon: 'skill' }
+      },
+      {
+        path: 'settle-in',
+        component: () => import('@/views/douyin-role/settle-in'),
+        name: 'settle-in',
+        meta: { title: 'settle_in', icon: 'el-icon-s-cooperation' }
+      }
+    ]
+  },
+
+  {
+    path: '/yut',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: 'yut', icon: 'el-icon-picture-outline' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/yut/index'),
+        name: 'yut',
+        meta: { title: 'yut_img', icon: 'el-icon-picture' }
       }
     ]
   },
