@@ -73,7 +73,9 @@ export default {
     settle_in: '自营机构/服务商入驻',
     yut: '原图与压缩管理',
     yut_img: '上传图片',
-    lunar: '阴历转阳历'
+    lunar: '阴历转阳历',
+    diff: '计算两个日期差',
+    address: '智能地址解析'
   },
   navbar: {
     dashboard: '首页',

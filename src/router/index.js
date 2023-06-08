@@ -503,6 +503,34 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/diff',
+    component: Layout,
+    alwaysShow: false,
+    meta: { title: 'diff', icon: 'el-icon-s-opportunity' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/diff/index'),
+        name: 'diff',
+        meta: { title: 'diff', icon: 'el-icon-grape' }
+      }
+    ]
+  },
+  {
+    path: '/address',
+    component: Layout,
+    alwaysShow: false,
+    meta: { title: 'address', icon: 'el-icon-s-opportunity' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/address/index'),
+        name: 'address',
+        meta: { title: 'address', icon: 'el-icon-location' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

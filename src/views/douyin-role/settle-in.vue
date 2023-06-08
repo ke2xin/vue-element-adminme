@@ -38,6 +38,7 @@
             <el-row type="flex" justify="space-between" class="uploadidcard">
               <el-col :span="10">
                 <el-upload
+                  ref="upload"
                   v-model="personalForm.basic_auth.enterprise.legal_person.front_path"
                   class="idCard1"
                   action="#"
@@ -48,6 +49,7 @@
                   multiple="multiple"
                   :on-change="idenImghandleChange"
                   :http-request="handleHttpRequest1"
+                  :auto-upload="true"
                 >
                   <img v-if="merIdenImgFront" :src="merIdenImgFront" class="avatar" style="width:100%;height:100%">
                 </el-upload>
@@ -110,19 +112,13 @@ export default {
   data() {
     // 身份证正面验证
     var validateImgFront = (rule, value, callback) => { // （关键代码）
-      if (this.personalForm.basic_auth.enterprise.legal_person.front_path === '') {
-        console.log('空')
-      } else {
-        console.log('不空')
-      }
-      console.log(this.personalForm.basic_auth.enterprise.legal_person)
-      console.log(this.personalForm.basic_auth.enterprise.legal_person.front_path)
+      console.log('手动验证')
       if (this.personalForm.basic_auth.enterprise.legal_person.front_path === '' && this.personalForm.basic_auth.enterprise.legal_person.back_path === '') {
-        console.log(this.personalForm)
-        return callback(new Error('附件不能为空333'))
+        return callback(new Error('附件不能为空'))
       } else if (this.personalForm.basic_auth.enterprise.legal_person.front_path === '') {
         return callback(new Error('请上传身份证正面'))
       } else if (this.personalForm.basic_auth.enterprise.legal_person.back_path === '') {
+        console.log('请上传身份证背面')
         return callback(new Error('请上传身份证背面'))
       } else {
         callback()
@@ -233,9 +229,9 @@ export default {
       console.log('身份证正面返回的数据', response)
       console.log(file)
       console.log(fileList)
-      this.merIdenImgFront = file.url// 保存临时图片
+      // this.merIdenImgFront = file.url// 保存临时图片
       this.personalForm.basic_auth.enterprise.legal_person.front_path = file.url
-      this.personalForm.merIdenImgFront = response// 保存到提交表单
+      // this.personalForm.merIdenImgFront = response// 保存到提交表单
     },
     // 上传身份证反面成功
     handleAvatarSuccess2(response, file, fileList) {
@@ -264,28 +260,33 @@ export default {
     },
     onSubmit() {
       console.log('submit!', this.personalForm)
+      // this.$refs.upload.submit()
     },
     handleHttpRequest1(params) {
-      this.merIdenImgFront = params.url// 保存临时图片
-      this.personalForm.merIdenImgFront = params// 保存到提交表单
+      this.merIdenImgFront = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'// 保存临时图片
+      this.personalForm.merIdenImgFront = '2222'// 保存到提交表单
       console.log(params)
+      this.personalForm.basic_auth.enterprise.legal_person.front_path = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
       var fd = new FormData()
       fd.append('type', '1000')
       fd.append('file', params.file)
       dyTest(fd).then((response) => {
         console.log(response)
+        this.$refs.personalForm.validateField('merIdenImgFront')
         this.personalForm.basic_auth.enterprise.legal_person.front_path = response.data
       })
     },
     handleHttpRequest2(params) {
-      this.merIdenImgBack = params.url// 保存临时图片
-      this.personalForm.merIdenImgBack = params// 保存到提交表单
+      this.merIdenImgBack = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'// 保存临时图片
+      this.personalForm.merIdenImgBack = '55'// 保存到提交表单
       console.log(params)
+      this.personalForm.basic_auth.enterprise.legal_person.back_path = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
       var fd = new FormData()
       fd.append('type', '1000')
       fd.append('file', params.file)
       dyTest(fd).then((response) => {
         console.log(response)
+        this.$refs.personalForm.validateField('merIdenImgFront')
         this.personalForm.basic_auth.enterprise.legal_person.back_path = response.data
       })
     },
