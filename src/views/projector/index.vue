@@ -61,12 +61,12 @@
         <el-form-item label="标题" prop="mp4_bt">
           <el-input v-model="temp.mp4_bt" />
         </el-form-item>
-        <el-form-item label="封面图" prop="mp4_pic">
+        <!--        <el-form-item label="封面图" prop="mp4_pic">
           <el-input v-model="temp.mp4_pic" />
-        </el-form-item>
-        <!--        <el-form-item label="封面图" prop="mp4_pic" label-width="80px">
-          <upload v-model="temp.mp4_pic" />
         </el-form-item>-->
+        <el-form-item label="封面图" prop="mp4_pic" label-width="80px">
+          <upload v-model="temp.mp4_pic" />
+        </el-form-item>
         <el-form-item label="视频地址" prop="mp4_url" label-width="80px">
           <el-input v-model="temp.mp4_url" />
         </el-form-item>
@@ -100,11 +100,11 @@
 import { fetchList, createMp4, del } from '@/api/projector'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
-/* import Upload from '@/components/Upload/SingleImage4'*/
+import Upload from '@/components/Upload/SingleImage4'
 export default {
   name: 'Index',
   directives: { waves },
-  components: { Pagination /* Upload*/ },
+  components: { Pagination, Upload },
   data() {
     return {
       fileList: [],

@@ -135,7 +135,7 @@ export const asyncRoutes = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
-    hidden: true,
+    hidden: false,
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
@@ -449,6 +449,18 @@ export const asyncRoutes = [
         component: () => import('@/views/douyin/searchkc'),
         name: 'searchkc',
         meta: { title: 'searchkc', icon: 'el-icon-search' }
+      },
+      {
+        path: 'addkc',
+        component: () => import('@/views/douyin/add-kc'),
+        name: 'addkc',
+        meta: { title: 'addkc', icon: 'form' }
+      },
+      {
+        path: 'querykc',
+        component: () => import('@/views/douyin/query-kc'),
+        name: 'querykc',
+        meta: { title: 'querykc', icon: 'search' }
       }
     ]
   },
@@ -470,6 +482,66 @@ export const asyncRoutes = [
         component: () => import('@/views/douyin-role/settle-in'),
         name: 'settle-in',
         meta: { title: 'settle_in', icon: 'el-icon-s-cooperation' }
+      },
+      {
+        path: 'settle-in-partner',
+        component: () => import('@/views/douyin-role/settle-in-partner'),
+        name: 'settle-in-partner',
+        meta: { title: 'settle_in_partner', icon: 'el-icon-s-cooperation' }
+      },
+      {
+        path: 'add-role',
+        component: () => import('@/views/douyin-role/add-role'),
+        name: 'add-role',
+        meta: { title: 'add_role', icon: 'add_role' }
+      },
+      {
+        path: 'bind-role',
+        component: () => import('@/views/douyin-role/bind_role'),
+        name: 'bind-role',
+        meta: { title: 'bind_role', icon: 'el-icon-paperclip' }
+      },
+      {
+        path: 'query-entity',
+        component: () => import('@/views/douyin-role/query-entity'),
+        name: 'query-entity',
+        meta: { title: 'query_entity', icon: 'search' }
+      },
+      {
+        path: 'get-bind-list',
+        component: () => import('@/views/douyin-role/get_bind_list.vue'),
+        name: 'get-bind-list',
+        meta: { title: 'get_bind_list', icon: 'search' }
+      },
+      {
+        path: 'get-class-auth',
+        component: () => import('@/views/douyin-role/get_class_auth'),
+        name: 'get-class-auth',
+        meta: { title: 'get_class_auth', icon: 'search' }
+      },
+      {
+        path: 'query-entity-info',
+        component: () => import('@/views/douyin-role/query_entity_info'),
+        name: 'query-entity-info',
+        meta: { title: 'query_entity_info', icon: 'search' }
+      },
+      {
+        path: 'add-class-auth',
+        component: () => import('@/views/douyin-role/add_class_auth'),
+        name: 'add-class-auth',
+        meta: { title: 'add_class_auth', icon: 'search' }
+      },
+      {
+        path: 'update-class-auth',
+        component: () => import('@/views/douyin-role/update_class_auth'),
+        name: 'update-class-auth',
+        meta: { title: 'update_class_auth', icon: 'edit' }
+      },
+      {
+        path: 'get-audit-detail',
+        component: () => import('@/views/douyin-role/get_audit_detail'),
+        name: 'get-audit-detail',
+        meta: { title: 'get_audit_detail', icon: 'search' }
       }
     ]
   },
@@ -528,6 +600,32 @@ export const asyncRoutes = [
         component: () => import('@/views/address/index'),
         name: 'address',
         meta: { title: 'address', icon: 'el-icon-location' }
+      }
+    ]
+  },
+  {
+    path: '/shanghujj',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: 'shanghujj', icon: 'component' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/shanghujj/index'),
+        name: 'shanghujj',
+        meta: { title: 'shanghujj', icon: 'component' }
+      },
+      {
+        path: 'jinjian',
+        component: () => import('@/views/shanghujj/jinjian'),
+        name: 'jinjian',
+        meta: { title: 'jinjian', icon: 'component' }
+      },
+      {
+        path: 'dzsld',
+        component: () => import('@/views/shanghujj/dzsld'),
+        name: 'dzsld',
+        meta: { title: 'dzsld', icon: 'component' }
       }
     ]
   },

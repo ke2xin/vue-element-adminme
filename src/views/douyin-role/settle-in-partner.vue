@@ -1,36 +1,27 @@
 <template>
   <div class="app-container">
     <el-form ref="personalForm" label-width="80px" :model="personalForm" :rules="rules">
-      <el-form-item label="企业名称" prop="entity_name">
+      <el-form-item label="类型" prop="entity_type">
+        <el-select v-model="personalForm.basic_auth.entity_type" placeholder="请选择">
+          <el-option v-for="item in entity_type_arr" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="实体名称" prop="entity_name">
         <el-input v-model="personalForm.basic_auth.entity_name" />
       </el-form-item>
-      <el-form-item label="营业执照编号" prop="certificate_id">
-        <el-input v-model="personalForm.basic_auth.enterprise.certificate_id" />
+      <el-form-item label="证件类型" prop="certificate_type">
+        <el-select v-model="personalForm.basic_auth.certificate_type" placeholder="请选择">
+          <el-option v-for="item in certificate_type_arr" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="营业执照">
-        <el-upload
-          action="#"
-          list-type="picture-card"
-          :on-preview="handlePictureCardPreview"
-          :on-remove="handleRemove2"
-          :http-request="handleHttpRequest3"
-          :limit="1"
-          :on-exceed="handleExceed2"
-        >
-          <i class="el-icon-plus" />
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
-      </el-form-item>
-      <el-form-item label="法人姓名" prop="name">
-        <el-input v-model="personalForm.basic_auth.enterprise.legal_person.name" />
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="personalForm.basic_auth.individual.name" />
       </el-form-item>
       <el-form-item label="身份证号码" prop="id_number">
-        <el-input v-model="personalForm.basic_auth.enterprise.legal_person.id_number" />
+        <el-input v-model="personalForm.basic_auth.individual.id_number" />
       </el-form-item>
       <el-form-item label="身份证有效期" prop="expire_time">
-        <el-date-picker v-model="personalForm.basic_auth.enterprise.legal_person.expire_time" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
+        <el-date-picker v-model="personalForm.basic_auth.individual.expire_time" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
       </el-form-item>
       <el-row>
         <el-col :span="24">
@@ -39,7 +30,7 @@
               <el-col :span="10">
                 <el-upload
                   ref="upload"
-                  v-model="personalForm.basic_auth.enterprise.legal_person.front_path"
+                  v-model="personalForm.basic_auth.individual.front_path"
                   class="idCard1"
                   action="#"
                   list-type="picture-card"
@@ -77,10 +68,12 @@
       <el-form-item label="">
         <p style="color:#888">注：以上所需上传照片仅支持JPEG、GIF、PNG格式的图片，大小不超过2M。</p>
       </el-form-item>
-      <el-form-item label="营业执照上的公司地址" prop="company_addr">
-        <el-input v-model="personalForm.class_auth.partner.company_addr" />
+      <el-form-item label="角色类型" prop="industry_role">
+        <el-select v-model="personalForm.class_auth.industry_role" placeholder="请选择">
+          <el-option v-for="item in industry_role_arr" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="合作案例资料图片" prop="cooperation_cases">
+      <el-form-item label="资质" prop="qualifications">
         <el-upload
           class="upload-demo"
           action="#"
@@ -94,7 +87,7 @@
           :http-request="handleHttpRequest4"
         >
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">上传合作案例</div>
+          <div slot="tip" class="el-upload__tip">上传对应资质</div>
         </el-upload>
       </el-form-item>
       <el-form-item>
@@ -106,107 +99,107 @@
 </template>
 
 <script>
-import { dyRoleSettle, dyRoleUploadMaterial } from '@/api/douyin'
+import { dyRoleSettlePartner, dyRoleUploadMaterial } from '@/api/douyin'
 
 export default {
-  name: 'SettleIn',
+  name: 'SettleInPartner',
   data() {
     // 身份证正面验证
     var validateImgFront = (rule, value, callback) => { // （关键代码）
-      if (this.personalForm.basic_auth.enterprise.legal_person.front_path === '' && this.personalForm.basic_auth.enterprise.legal_person.back_path === '') {
+      if (this.personalForm.basic_auth.individual.front_path === '' && this.personalForm.basic_auth.individual.back_path === '') {
         return callback(new Error('附件不能为空'))
-      } else if (this.personalForm.basic_auth.enterprise.legal_person.front_path === '') {
+      } else if (this.personalForm.basic_auth.individual.front_path === '') {
         return callback(new Error('请上传身份证正面'))
-      } else if (this.personalForm.basic_auth.enterprise.legal_person.back_path === '') {
+      } else if (this.personalForm.basic_auth.individual.back_path === '') {
         return callback(new Error('请上传身份证背面'))
+      } else {
+        callback()
+      }
+    }
+    var validateEntityType = (rule, value, callback) => {
+      if (this.personalForm.basic_auth.entity_type === '') {
+        return callback(new Error('请选择类型'))
       } else {
         callback()
       }
     }
     var validateEntityName = (rule, value, callback) => {
       if (this.personalForm.basic_auth.entity_name === '') {
-        return callback(new Error('请填写企业名称'))
-      } else {
-        callback()
-      }
-    }
-    var validateCertificateId = (rule, value, callback) => {
-      if (this.personalForm.basic_auth.enterprise.certificate_id === '') {
-        return callback(new Error('请填写营业执照编号'))
+        return callback(new Error('请填写实体名称'))
       } else {
         callback()
       }
     }
     var validateName = (rule, value, callback) => {
-      if (this.personalForm.basic_auth.enterprise.legal_person.name === '') {
+      if (this.personalForm.basic_auth.individual.name === '') {
         return callback(new Error('请填写法人姓名'))
       } else {
         return callback()
       }
     }
     var validateIdNumber = (rule, value, callback) => {
-      if (this.personalForm.basic_auth.enterprise.legal_person.id_number === '') {
-        return callback('请填写法人身份证号码')
+      if (this.personalForm.basic_auth.individual.id_number === '') {
+        return callback('请填写身份证号码')
       } else {
         return callback()
       }
     }
     var validateExpireTime = (rule, value, callback) => {
-      if (this.personalForm.basic_auth.enterprise.legal_person.expire_time === '') {
+      if (this.personalForm.basic_auth.individual.expire_time === '') {
         return callback('请选择身份证过期时间')
       } else {
         return callback()
       }
     }
-    var validateCompanyAddr = (rule, value, callback) => {
-      if (this.personalForm.class_auth.partner.company_addr === '') {
-        return callback(new Error('请填写公司地址'))
-      } else {
-        return callback()
-      }
-    }
-    var validateCooperationCases = (rule, value, callback) => {
-      if (this.personalForm.class_auth.partner.cooperation_cases.length <= 0) {
-        return callback(new Error('请上传合作案例'))
+    var validateQualifications = (rule, value, callback) => {
+      if (this.personalForm.class_auth.qualifications <= 0) {
+        return callback(new Error('请上传对应资质'))
       } else {
         return callback()
       }
     }
     return {
-      ruleForm: {
-        name: undefined
-      },
-      uploadURL: 'https://slpos.kosm.com.cn/ypps/ps/ckz/douyinkc/dy_upload_file.php',
+      entity_type_arr: [
+        {
+          value: 1,
+          label: '个人'
+        }
+      ],
+      certificate_type_arr: [
+        {
+          value: 1,
+          label: '身份证'
+        }
+      ],
+      industry_role_arr: [
+        {
+          value: 1,
+          label: '老师'
+        }
+      ],
       personalForm: {
+        entity_id: 'I7170969438722736139',
         basic_auth: {
-          entity_type: 2,
-          entity_name: '',
-          certificate_type: 2,
-          enterprise: {
-            certificate_id: '',
-            certificate_materials: [],
-            legal_person: {
-              name: '',
-              id_number: '',
-              expire_time: '',
-              front_path: '', // 身份证正面
-              back_path: ''// 身份证反面
-            }
+          entity_type: undefined,
+          entity_name: '唐波',
+          certificate_type: undefined,
+          individual: {
+            name: '唐波',
+            id_number: '510902198205163603',
+            expire_time: '',
+            front_path: '',
+            back_path: ''
           }
         },
         class_auth: {
           industry_code: 10000,
           industry_class: {
-            first_class: 0,
-            second_class: 0,
+            first_class: 50000,
+            second_class: 51700,
             third_class: 0
           },
-          industry_role: 3,
-          partner: {
-            company_type: '企业工商户',
-            company_addr: '',
-            cooperation_cases: []
-          }
+          industry_role: undefined,
+          qualifications: []
         }
       },
       merIdenImgFront: '',
@@ -215,11 +208,11 @@ export default {
         merIdenImgFront: [
           { validator: validateImgFront, trigger: 'change' }
         ],
-        entity_name: [
-          { validator: validateEntityName, message: '请填写企业名称', trigger: 'blur' }
+        entity_type: [
+          { validator: validateEntityType, message: '请选择类型名称', trigger: 'blur', required: true }
         ],
-        certificate_id: [
-          { validator: validateCertificateId, trigger: 'blur' }
+        entity_name: [
+          { validator: validateEntityName, message: '请填写实体名称', trigger: 'blur', required: true }
         ],
         name: [
           { validator: validateName, trigger: 'blur' }
@@ -230,11 +223,8 @@ export default {
         expire_time: [
           { validator: validateExpireTime, trigger: 'blur' }
         ],
-        company_addr: [
-          { validator: validateCompanyAddr, trigger: 'blur' }
-        ],
-        cooperation_cases: [
-          { validator: validateCooperationCases, trigger: 'blur' }
+        qualifications: [
+          { validator: validateQualifications, trigger: 'blur', required: true }
         ]
       },
       fileList: [],
@@ -285,20 +275,17 @@ export default {
       console.log('submit!', this.personalForm)
       this.$refs.personalForm.validate((valid) => {
         if (valid) {
-          dyRoleSettle(this.personalForm).then((response) => {
+          dyRoleSettlePartner(this.personalForm).then((response) => {
             console.log('提交表单返回数据', response)
           }).catch((err) => {
             console.log(err)
           })
         }
       })
-      // this.$refs.upload.submit() 这个是手动提交表单的文件
     },
     handleHttpRequest1(params) {
-      // this.merIdenImgFront = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'// 保存临时图片
       console.log(params)
       this.merIdenImgFront = this.handleCreateURL(params.file)
-      this.personalForm.basic_auth.enterprise.legal_person.front_path = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
       var fd = new FormData()
       fd.append('type', '1000')
       fd.append('file', params.file)
@@ -308,15 +295,13 @@ export default {
         console.log(meterial)
         if (meterial.err_no === 0) {
           this.$refs.personalForm.validateField('merIdenImgFront')
-          this.personalForm.basic_auth.enterprise.legal_person.front_path = meterial.path
+          this.personalForm.basic_auth.individual.front_path = meterial.path
         }
       })
     },
     handleHttpRequest2(params) {
-      // this.merIdenImgBack = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'// 保存临时图片
       console.log(params)
       this.merIdenImgBack = this.handleCreateURL(params.file)
-      this.personalForm.basic_auth.enterprise.legal_person.back_path = 'https://img1.baidu.com/it/u=1650201936,4218389007&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313'
       var fd = new FormData()
       fd.append('type', 1000)
       fd.append('file', params.file)
@@ -326,37 +311,14 @@ export default {
         console.log(meterial)
         if (meterial.err_no === 0) {
           this.$refs.personalForm.validateField('merIdenImgFront')
-          this.personalForm.basic_auth.enterprise.legal_person.back_path = meterial.path
-        }
-      })
-    },
-    handleHttpRequest3(params) {
-      console.log('提交营业执照')
-      console.log(params)
-      var fd = new FormData()
-      fd.append('type', 1007)
-      fd.append('file', params.file)
-      dyRoleUploadMaterial(fd).then((response) => {
-        console.log(response)
-        var meterial = JSON.parse(response.data)
-        console.log(meterial)
-        if (meterial.err_no === 0) {
-          this.personalForm.basic_auth.enterprise.certificate_materials = []
-          var o = {}
-          o.material_type = 1007
-          o.material_expiretime = '2099-12-31'
-          var arr = []
-          // arr.push('certification/resource/8cd81a3a93be782b1fef994aede24383')
-          arr.push(meterial.path)
-          o.material_paths = arr
-          this.personalForm.basic_auth.enterprise.certificate_materials.push(o)
+          this.personalForm.basic_auth.individual.back_path = meterial.path
         }
       })
     },
     handleHttpRequest4(params) {
       console.log(params)
       var fd = new FormData()
-      fd.append('type', '1010')
+      fd.append('type', '1001')
       fd.append('file', params.file)
       dyRoleUploadMaterial(fd).then((response) => {
         console.log(response)
@@ -364,13 +326,12 @@ export default {
         console.log(meterial)
         if (meterial.err_no === 0) {
           var o = {}
-          o.material_type = 1010
+          o.material_type = 1001
           o.material_expiretime = '2029-09-10'
           var arr = []
-          // arr.push('certification/resource/8cd81a3a93be782b1fef994aede24383')
           arr.push(meterial.path)
           o.material_paths = arr
-          this.personalForm.class_auth.partner.cooperation_cases.push(o)
+          this.personalForm.class_auth.qualifications.push(o)
         }
       })
     },
